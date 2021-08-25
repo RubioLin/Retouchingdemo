@@ -14,6 +14,7 @@
 		0F60218826C7B2F900F78949 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F60218626C7B2F900F78949 /* LaunchScreen.storyboard */; };
 		0F60219026C7B33100F78949 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F60218F26C7B33100F78949 /* GalleryViewController.swift */; };
 		0F60219226C7B34B00F78949 /* RetouchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F60219126C7B34B00F78949 /* RetouchingViewController.swift */; };
+		0F7F6DE126CFA879008C80FA /* DraggableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F7F6DE026CFA879008C80FA /* DraggableTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		0F60218926C7B2F900F78949 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F60218F26C7B33100F78949 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		0F60219126C7B34B00F78949 /* RetouchingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetouchingViewController.swift; sourceTree = "<group>"; };
+		0F7F6DE026CFA879008C80FA /* DraggableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				0F60217D26C7B2F800F78949 /* SceneDelegate.swift */,
 				0F60218F26C7B33100F78949 /* GalleryViewController.swift */,
 				0F60219126C7B34B00F78949 /* RetouchingViewController.swift */,
+				0F7F6DE026CFA879008C80FA /* DraggableTextView.swift */,
 				0F60218126C7B2F800F78949 /* Main.storyboard */,
 				0F60218626C7B2F900F78949 /* LaunchScreen.storyboard */,
 				0F60218426C7B2F900F78949 /* Assets.xcassets */,
@@ -140,6 +143,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F7F6DE126CFA879008C80FA /* DraggableTextView.swift in Sources */,
 				0F60219226C7B34B00F78949 /* RetouchingViewController.swift in Sources */,
 				0F60219026C7B33100F78949 /* GalleryViewController.swift in Sources */,
 				0F60217C26C7B2F800F78949 /* AppDelegate.swift in Sources */,

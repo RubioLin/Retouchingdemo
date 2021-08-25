@@ -4,16 +4,12 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate &
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
-        selectedImageView.image = image
-        
-//        if let retouchingViewController = storyboard?.instantiateViewController(identifier: "\(RetouchingViewController.self)", creator: { coder in
-//            RetouchingViewController.init(coder: coder, image: image!)
-//        }) {
-//            show(retouchingViewController, sender: nil)
-//        }
+        if let retouchingController = storyboard?.instantiateViewController(identifier: "retouchingViewController", creator: { coder in RetouchingViewController(coder: coder, retouchingPhoto: image!)
+        }) {
+            show(retouchingController, sender: nil)
+        }
         dismiss(animated: true, completion: nil)
     }
-    
     
     @IBOutlet weak var selectedImageView: UIImageView!
     @IBOutlet weak var selectedPhotoBtn: UIButton!
@@ -50,4 +46,4 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate &
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
-    }
+}
