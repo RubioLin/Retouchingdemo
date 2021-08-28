@@ -1,15 +1,16 @@
 import UIKit
+import CoreImage.CIFilterBuiltins
 
 enum type {
-    case typeText, typeCrop, typeRotate
+    case typeDefault, typeCrop, typeRotate, typeFilter
 }
 
-var currentType: type = .typeText
+var currentType: type = .typeDefault
 
-class RetouchingViewController: UIViewController, UIColorPickerViewControllerDelegate, UITextViewDelegate {
+class RetouchingViewController: UIViewController, UIColorPickerViewControllerDelegate {
     
     init?(coder: NSCoder, retouchingPhoto: UIImage){
-        self.selectedPhoro = retouchingPhoto
+        self.selectedPhoto = retouchingPhoto
         super.init(coder: coder)
     }
 
@@ -17,11 +18,14 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         fatalError("init(coder:) has not been implemented")
     }
     
+   
+    @IBOutlet var filterBtns: [UIButton]!
+    @IBOutlet weak var filterScrollView: UIScrollView!
     @IBOutlet var secondBtns: [UIButton]!
     @IBOutlet weak var imageBackgroundView: UIView!
     @IBOutlet weak var retouchingImageView: UIImageView!
     @IBOutlet var fullscreenView: UIView!
-    var selectedPhoro: UIImage?
+    var selectedPhoto: UIImage?
     var width: CGFloat = 0.0
     var height: CGFloat = 0.0
     var rotatex: CGFloat = 1
@@ -34,15 +38,11 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
     var textView: DraggableTextView?
     var imageBackgroundmaxY: CGFloat = 0
     var imageBackgroundminY: CGFloat = 0
-    var a: UIView!
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(pan(g:)) )
-        textView?.addGestureRecognizer(pan)
-        retouchingImageView.image = selectedPhoro
+        retouchingImageView.image = selectedPhoto
         imageBackgroundOriginalWidth = imageBackgroundView.bounds.width
         imageBackgroundOriginalHeight = imageBackgroundView.bounds.height
         retouchingImageOriginalWidth = retouchingImageView.frame.width
@@ -50,23 +50,6 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         imageBackgroundmaxY = imageBackgroundView.frame.maxY
         imageBackgroundminY = imageBackgroundView.frame.minY
     }
-    
-    @objc func pan(g: UIPanGestureRecognizer) {
-        switch g.state {
-        case .began:
-            print("began")
-        case .ended:
-            print("ended")
-        case .changed:
-            self.textView?.center = g.location(ofTouch: 0, in: retouchingImageView)
-            if (self.textView?.frame.midY)! > retouchingImageView.bounds.maxY {
-                textView?.frame.origin = CGPoint(x: retouchingImageView.frame.midX - CGFloat((self.textView?.frame.width)! / 2), y: retouchingImageView.frame.midY - CGFloat((self.textView?.frame.height)! / 2))
-            } 
-        default:
-            print("hello")
-        }
-    }
-    
     
     func originalCrop() {
         imageBackgroundView.bounds.size = CGSize(width: imageBackgroundOriginalWidth, height: imageBackgroundOriginalHeight)
@@ -79,18 +62,18 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         retouchingImageView.transform = CGAffineTransform(scaleX: rotatex, y: rotatey)
     }
     
-     
-    
     @IBAction func Btn1(_ sender: UIButton) {
         switch currentType {
-        case .typeText:
-            createTextView()
+        case .typeDefault:
+            fallthrough
         case .typeCrop:
             originalCrop()
             imageBackgroundmaxY = imageBackgroundView.frame.maxY
             print(imageBackgroundmaxY)
         case .typeRotate:
             horizontalRotate()
+        case .typeFilter:
+            break
         }
     }
     
@@ -108,7 +91,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
     
     @IBAction func Btn2(_ sender: UIButton) {
         switch currentType {
-        case .typeText:
+        case .typeDefault:
             fallthrough
         case .typeCrop:
             squareCrop()
@@ -116,6 +99,8 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
             print(imageBackgroundmaxY)
         case .typeRotate:
             verticalRotate()
+        case .typeFilter:
+            break
         }
     }
     
@@ -134,7 +119,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
     
     @IBAction func Btn3(_ sender: UIButton) {
         switch currentType {
-        case .typeText:
+        case .typeDefault:
             fallthrough
         case .typeCrop:
             ratio16to9Crop()
@@ -142,6 +127,8 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
             print(imageBackgroundmaxY)
         case .typeRotate:
             clockwiseRotate()
+        case .typeFilter:
+            break
         }
     }
     
@@ -152,12 +139,14 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
     
     @IBAction func Btn4(_ sender: UIButton) {
         switch currentType {
-        case .typeText:
+        case .typeDefault:
             fallthrough
         case .typeCrop:
             fallthrough
         case .typeRotate:
             anticlockwiseRotate()
+        case .typeFilter:
+            break
         }
     }
     
@@ -166,12 +155,49 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
     }
     
     func secondBtnReset() {
+        filterScrollView.isHidden = true
         secondBtns[0].isHidden = false
         secondBtns[1].isHidden = false
         secondBtns[2].isHidden = false
         secondBtns[3].isHidden = false
     }
+    
+    func filterChange(filterName: filterEffect) {
+        let ciImage = CIImage(image: selectedPhoto!)
+        let filter = CIFilter(name: filterName.rawValue)
+        filter?.setValue(ciImage, forKey: kCIInputImageKey)
+        if filterName == .CISepiaTone {
+            filter?.setValue(1 , forKey: kCIInputIntensityKey)
+        }
+        if let output = filter?.outputImage {
+            let filterImage = UIImage(ciImage: output)
+            retouchingImageView.image = filterImage
+        }
+    }
  
+    @IBAction func filterChange(_ sender: UIButton) {
+        let index = filterBtns.firstIndex(of: sender)
+        
+        switch index {
+        case 0:
+            retouchingImageView.image = selectedPhoto
+        case 1:
+            filterChange(filterName: .CIPhotoEffectInstant)
+        case 2:
+            filterChange(filterName: .CISepiaTone)
+        case 3:
+            filterChange(filterName: .CIPhotoEffectMono)
+        case 4:
+            filterChange(filterName: .CIPhotoEffectProcess)
+        case 5:
+            filterChange(filterName: .CISRGBToneCurveToLinear)
+        default:
+            break
+        }
+            
+        
+    }
+    
     func photoSave() {
         let renderer = UIGraphicsImageRenderer(size: imageBackgroundView.bounds.size)
         let retouchingImage = renderer.image (actions: { (UIGraphicsImageRendererContext) in
@@ -189,7 +215,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         secondBtnReset()
         currentType = .typeCrop
         switch currentType {
-        case .typeText:
+        case .typeDefault:
             fallthrough
         case .typeCrop:
             secondBtns[0].setTitle("original", for: .normal)
@@ -200,6 +226,8 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
             secondBtns[2].setImage(nil, for: .normal)
             secondBtns[3].isHidden = true
         case .typeRotate:
+            fallthrough
+        case .typeFilter:
             break
         }
     }
@@ -208,7 +236,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         secondBtnReset()
         currentType = .typeRotate
         switch currentType {
-        case .typeText:
+        case .typeDefault:
             fallthrough
         case .typeCrop:
             fallthrough
@@ -221,6 +249,8 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
             secondBtns[2].setImage(UIImage(systemName: "rotate.right"), for: .normal)
             secondBtns[3].setTitle(nil, for: .normal)
             secondBtns[3].setImage(UIImage(systemName: "rotate.left"), for: .normal)
+        case .typeFilter:
+            break
         }
     }
     
@@ -229,12 +259,32 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         controller.delegate = self
         present(controller, animated: true, completion: nil)
     }
+        
+    @IBAction func typeFilterChange(_ sender: UIButton) {
+        currentType = .typeFilter
+        switch currentType {
+        case .typeDefault:
+            fallthrough
+        case .typeCrop:
+            fallthrough
+        case .typeRotate:
+            fallthrough
+        case .typeFilter:
+            filterScrollView.isHidden = false
+            secondBtns[0].isHidden = true
+            secondBtns[1].isHidden = true
+            secondBtns[2].isHidden = true
+            secondBtns[3].isHidden = true
+        }
+    }
     
+    //TODO: - 新增文字功能待新增
+    /*
     @IBAction func typeTextChange(_ sender: UIButton) {
         secondBtnReset()
-        currentType = .typeText
+        currentType = .typeDefault
         switch currentType {
-        case .typeText:
+        case .typeDefault:
             secondBtns[0].setTitle(nil, for: .normal)
             secondBtns[0].setImage(UIImage(systemName: "plus"), for: .normal)
             secondBtns[1].setTitle(nil, for: .normal)
@@ -246,29 +296,10 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         case .typeCrop:
             fallthrough
         case .typeRotate:
+            fallthrough
+        case .typeFilter:
             break
         }
     }
-   
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        self.textView?.resignFirstResponder()    }
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        textView.backgroundColor = .lightGray
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        textView.backgroundColor = .clear
-    }
-    
-    
-    func createTextView() {
-        textView = DraggableTextView(frame: CGRect(x: 0, y: 0, width: 100, height: 20), textContainer: nil)
-        textView?.backgroundColor = .lightGray
-        textView?.delegate = self
-        textView?.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
-        self.imageBackgroundView.addSubview(textView!)
-        textView?.isScrollEnabled = false
-    }
+    */
 }

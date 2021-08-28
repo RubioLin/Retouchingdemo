@@ -9,9 +9,10 @@ class DraggableTextView: UITextView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+ 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard currentType == .typeText else {
+        guard currentType == .typeDefault else {
             return
         }
         if let touch = touches.first {
@@ -29,4 +30,5 @@ class DraggableTextView: UITextView {
         let newSize = self.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         self.frame.size = CGSize(width: max(newSize.width, fixedWidth) , height: newSize.height)
     }
+ 
 }

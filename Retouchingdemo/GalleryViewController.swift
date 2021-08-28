@@ -1,33 +1,16 @@
 import UIKit
 
-class GalleryViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class GalleryViewController: UIViewController {
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[.originalImage] as? UIImage
-        if let retouchingController = storyboard?.instantiateViewController(identifier: "retouchingViewController", creator: { coder in RetouchingViewController(coder: coder, retouchingPhoto: image!)
-        }) {
-            show(retouchingController, sender: nil)
-        }
-        dismiss(animated: true, completion: nil)
-    }
-    
     @IBOutlet weak var selectedImageView: UIImageView!
     @IBOutlet weak var selectedPhotoBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         selectedPhotoBtn.layer.cornerRadius = 35
-        selectedPhotoBtn.tintColor = .brown
         selectedPhotoBtn.backgroundColor = .black
         selectedPhotoBtn.layer.shadowRadius = 9
         selectedPhotoBtn.layer.shadowOpacity = 0.8
-    }
-    
-    func selectPhoto(sourceType: UIImagePickerController.SourceType) {
-        let ImagePickerController = UIImagePickerController()
-        ImagePickerController.sourceType = sourceType
-        ImagePickerController.delegate = self
-        present(ImagePickerController, animated: true, completion: nil)
     }
     
     @IBAction func selectPhotoBtn(_ sender: UIButton) {
@@ -47,3 +30,25 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate &
         present(alertController, animated: true, completion: nil)
     }
 }
+    
+extension GalleryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func selectPhoto(sourceType: UIImagePickerController.SourceType) {
+        let ImagePickerController = UIImagePickerController()
+        ImagePickerController.sourceType = sourceType
+        ImagePickerController.delegate = self
+        present(ImagePickerController, animated: true, completion: nil)
+    }
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage
+        if let retouchingController = storyboard?.instantiateViewController(identifier: "retouchingViewController", creator: { coder in RetouchingViewController(coder: coder, retouchingPhoto: image!)
+        }) {
+            show(retouchingController, sender: nil)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+}
+
