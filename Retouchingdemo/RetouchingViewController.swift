@@ -51,12 +51,13 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         imageBackgroundminY = imageBackgroundView.frame.minY
     }
     
+    //裁切成原圖
     func originalCrop() {
         imageBackgroundView.bounds.size = CGSize(width: imageBackgroundOriginalWidth, height: imageBackgroundOriginalHeight)
         retouchingImageView.frame.size = CGSize(width: retouchingImageOriginalWidth, height: retouchingImageOriginalHeight)
-        
     }
     
+    //水平翻轉
     func horizontalRotate() {
         rotatex *= -1
         retouchingImageView.transform = CGAffineTransform(scaleX: rotatex, y: rotatey)
@@ -77,6 +78,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         }
     }
     
+    //裁切成1：1
     func squareCrop() {
         width = imageBackgroundView.bounds.width
         height = width
@@ -84,6 +86,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         retouchingImageView.frame.size = imageBackgroundView.bounds.size
     }
     
+    //垂直翻轉
     func verticalRotate() {
         rotatey *= -1
         retouchingImageView.transform = CGAffineTransform(scaleX: rotatex, y: rotatey)
@@ -104,6 +107,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         }
     }
     
+    //裁切成16：9
     func ratio16to9Crop() {
         width = imageBackgroundView.bounds.width
         height = width / 16 * 9
@@ -112,6 +116,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
        
     }
     
+    //順時針翻轉
     func clockwiseRotate() {
         rotateConstant += ((CGFloat.pi) / 2)
         retouchingImageView.transform = CGAffineTransform(rotationAngle: rotateConstant )
@@ -132,6 +137,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         }
     }
     
+    //逆時針翻轉
     func anticlockwiseRotate() {
         rotateConstant -= ((CGFloat.pi) / 2)
         retouchingImageView.transform = CGAffineTransform(rotationAngle: rotateConstant )
@@ -150,10 +156,12 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         }
     }
     
+    //背景色調整
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         imageBackgroundView.backgroundColor = viewController.selectedColor
     }
     
+    //重置上排按鈕的狀態
     func secondBtnReset() {
         filterScrollView.isHidden = true
         secondBtns[0].isHidden = false
@@ -162,6 +170,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         secondBtns[3].isHidden = false
     }
     
+    //濾鏡的設定
     func filterChange(filterName: filterEffect) {
         let ciImage = CIImage(image: selectedPhoto!)
         let filter = CIFilter(name: filterName.rawValue)
@@ -174,10 +183,9 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
             retouchingImageView.image = filterImage
         }
     }
- 
+    
     @IBAction func filterChange(_ sender: UIButton) {
         let index = filterBtns.firstIndex(of: sender)
-        
         switch index {
         case 0:
             retouchingImageView.image = selectedPhoto
@@ -194,10 +202,9 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
         default:
             break
         }
-            
-        
     }
     
+    //儲存照片
     func photoSave() {
         let renderer = UIGraphicsImageRenderer(size: imageBackgroundView.bounds.size)
         let retouchingImage = renderer.image (actions: { (UIGraphicsImageRendererContext) in
@@ -222,7 +229,7 @@ class RetouchingViewController: UIViewController, UIColorPickerViewControllerDel
             secondBtns[0].setImage(nil, for: .normal)
             secondBtns[1].setTitle("1:1", for: .normal)
             secondBtns[1].setImage(nil, for: .normal)
-            secondBtns[2].setTitle("9:16", for: .normal)
+            secondBtns[2].setTitle("16:9", for: .normal)
             secondBtns[2].setImage(nil, for: .normal)
             secondBtns[3].isHidden = true
         case .typeRotate:

@@ -50,7 +50,6 @@
                     <connections>
                         <outlet property="selectedImageView" destination="ymL-nL-GeB" id="8b3-Fe-N9j"/>
                         <outlet property="selectedPhotoBtn" destination="CRZ-jL-SA0" id="FLU-L3-nWb"/>
-                        <segue destination="YfA-2B-gJy" kind="show" destinationCreationSelector="showRetouchingPhoto:" id="qq6-lL-blx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -65,7 +64,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleAspectFit" id="D78-cf-c4P">
+                            <view contentMode="scaleAspectFit" ambiguous="YES" id="D78-cf-c4P">
                                 <rect key="frame" x="10" y="188" width="355" height="400"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -74,7 +73,6 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="aQ3-NX-j8t" userLabel="FirstBtn">
                                 <rect key="frame" x="10" y="744" width="355" height="34"/>
@@ -203,7 +201,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="SOP-fQ-1uV" secondAttribute="height" id="dcd-ox-eGu"/>
                                                 </constraints>
-                                                <state key="normal" title="1" backgroundImage="1"/>
+                                                <state key="normal" backgroundImage="1"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
@@ -216,7 +214,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="icP-p5-H4Q" secondAttribute="height" id="GBS-s3-LJi"/>
                                                 </constraints>
-                                                <state key="normal" title="2" backgroundImage="2"/>
+                                                <state key="normal" backgroundImage="2"/>
                                                 <connections>
                                                     <action selector="filterChange:" destination="YfA-2B-gJy" eventType="touchUpInside" id="TAC-Xi-USK"/>
                                                 </connections>
@@ -226,7 +224,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="BbY-Kp-3SF" secondAttribute="height" id="gjE-SO-4MQ"/>
                                                 </constraints>
-                                                <state key="normal" title="3" backgroundImage="3"/>
+                                                <state key="normal" backgroundImage="3"/>
                                                 <connections>
                                                     <action selector="filterChange:" destination="YfA-2B-gJy" eventType="touchUpInside" id="s6g-Bx-mx1"/>
                                                 </connections>
@@ -236,7 +234,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="13o-7e-eVo" secondAttribute="height" id="hY8-Gb-ZVR"/>
                                                 </constraints>
-                                                <state key="normal" title="4" backgroundImage="4"/>
+                                                <state key="normal" backgroundImage="4"/>
                                                 <connections>
                                                     <action selector="filterChange:" destination="YfA-2B-gJy" eventType="touchUpInside" id="Kyn-H8-kVK"/>
                                                 </connections>
@@ -246,7 +244,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="nya-jg-WyC" secondAttribute="height" id="HDz-MJ-wWz"/>
                                                 </constraints>
-                                                <state key="normal" title="5" backgroundImage="5"/>
+                                                <state key="normal" backgroundImage="5"/>
                                                 <connections>
                                                     <action selector="filterChange:" destination="YfA-2B-gJy" eventType="touchUpInside" id="SmL-2x-bmn"/>
                                                 </connections>
